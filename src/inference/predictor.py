@@ -1,7 +1,7 @@
 import joblib
-from src.monitoring.logger import get_logger
 import numpy as np
-
+import pandas as pd
+from src.monitoring.logger import get_logger
 
 logger = get_logger()
 
@@ -23,8 +23,9 @@ class FraudPredictor:
 
             prob = self.pipeline.predict_proba(data)[:,1]
             pred = (prob>=self.threshold).astype(int)   
-
-            logger.info(f"Prediction Completed | Prob : {prob[0]} | Pred : {pred[0]}")
+   
+            for i in range(len(pred)):
+                logger.info(f"Prediction Completed | Prob : {prob[i]} | Pred : {pred[i]}")
 
             return prob, pred
         
@@ -32,5 +33,4 @@ class FraudPredictor:
 
             logger.error(f"Prediction Failed : {str(e)}")
             raise
-    
     
